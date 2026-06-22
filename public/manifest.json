@@ -1,0 +1,18 @@
+{
+  "name": "Antigravity Live Pickleball Scorecard",
+  "short_name": "Antigravity Score",
+  "description": "Live Pickleball Tournament score entry platform for court-side referees",
+  "start_url": "/login",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#4f46e5",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}

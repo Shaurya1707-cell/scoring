@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+:root {
+  --background: #000000;
+  --foreground: #ffffff;
+  --font-sans: 'Plus Jakarta Sans', var(--font-geist-sans), sans-serif;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-geist-mono);
+
+  /* Custom intermediate neutral/zinc shades used in the minimalist monochrome design system */
+  --color-zinc-850: #1e1e21;
+  --color-zinc-855: #18181b;
+  --color-zinc-805: #242427;
+  --color-zinc-705: #3b3b40;
+  --color-zinc-550: #63636c;
+  --color-zinc-505: #787882;
+  --color-zinc-405: #9696a0;
+  --color-zinc-55: #63636c;
+  --color-slate-850: #18181b; /* Map slate-850 to neutral dark gray to preserve pure black and white */
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+/* Custom Scrollbar for stark black and white mode */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #52525b;
+}
+
+/* Stark high contrast cards */
+.stark-card {
+  background-color: #000000;
+  border: 1px solid #27272a;
+}
+
+.stark-card:hover {
+  border-color: #52525b;
+}
+
+.stark-highlight-card {
+  background-color: #000000;
+  border: 1px solid #ffffff;
+}
+
+

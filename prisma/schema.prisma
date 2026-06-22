@@ -1,0 +1,246 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite" // Set to "postgresql" if using PostgreSQL
+}
+
+// ──────────────────────────────────────────
+// Enums
+// ──────────────────────────────────────────
+
+// In SQLite, Prisma emulates enums as TEXT with type validation in JS client.
+// To use native enums in PostgreSQL, simply change datasource provider to "postgresql".
+
+enum UserRole {
+  ADMIN
+  REFEREE
+}
+// Note: "viewer" is not a stored role — public viewing is fully open,
+// unauthenticated, and needs no User row at all.
+
+enum DivisionFormat {
+  ROUND_ROBIN
+  SINGLE_ELIM
+  DOUBLE_ELIM
+  POOL_PLAY
+}
+
+enum ScoringType {
+  RALLY        // default — see Section 6
+  TRADITIONAL
+}
+
+enum MatchStatus {
+  SCHEDULED
+  IN_PROGRESS
+  PAUSED
+  COMPLETED
+  DISPUTED
+}
+
+enum GameStatus {
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum CourtStatus {
+  ACTIVE
+  IDLE
+  MAINTENANCE
+}
+
+enum EnteredByRole {
+  REFEREE
+  ADMIN
+}
+
+// ──────────────────────────────────────────
+// Core event (single-event build — see Section 3)
+// ──────────────────────────────────────────
+
+model Tournament {
+  id          String     @id @default(cuid())
+  name        String
+  location    String?
+  startDate   DateTime
+  endDate     DateTime
+  status      String     @default("upcoming") // upcoming | live | completed
+  pointsToWin Int        @default(11)
+  winBy       Int        @default(2)
+  bestOf      Int        @default(3) // 1 or 3 games per match, default ruleset
+
+  divisions Division[]
+  courts    Court[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Division {
+  id           String         @id @default(cuid())
+  tournamentId String
+  tournament   Tournament     @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  name         String
+  format       DivisionFormat
+
+  // Flexible scoring — defaults to RALLY at the DB level (Section 6/11).
+  // An admin creating a division without picking a value gets rally scoring,
+  // never an unset/null state.
+  scoringType  ScoringType    @default(RALLY)
+
+  teams   Team[]
+  matches Match[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Team {
+  id         String   @id @default(cuid())
+  divisionId String
+  division   Division @relation(fields: [divisionId], references: [id], onDelete: Cascade)
+  name       String?  // optional display name/seed, e.g. "Seed #3"
+
+  players TeamPlayer[]
+
+  matchesAsTeamA Match[] @relation("TeamA")
+  matchesAsTeamB Match[] @relation("TeamB")
+  matchesWon     Match[] @relation("Winner")
+
+  gamesServingAs Game[] @relation("ServingTeam")
+  pointEvents    PointEvent[]
+
+  createdAt DateTime @default(now())
+}
+
+model Player {
+  id          String @id @default(cuid())
+  name        String
+  skillLevel  String?
+  contactInfo String?
+
+  teams TeamPlayer[]
+
+  createdAt DateTime @default(now())
+}
+
+// Join table: a Team has 1 player (singles) or 2 players (doubles).
+// Scoped to this event only — no cross-tournament player history (Section 11).
+model TeamPlayer {
+  teamId   String
+  team     Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  playerId String
+  player   Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@id([teamId, playerId])
+}
+
+model Court {
+  id           String      @id @default(cuid())
+  tournamentId String
+  tournament   Tournament  @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  name         String      // e.g. "Court 3"
+  status       CourtStatus @default(IDLE)
+
+  matches Match[]
+
+  createdAt DateTime @default(now())
+}
+
+model Match {
+  id            String      @id @default(cuid())
+  divisionId    String
+  division      Division    @relation(fields: [divisionId], references: [id], onDelete: Cascade)
+  round         String?     // e.g. "Pool A", "Quarterfinal"
+  courtId       String?
+  court         Court?      @relation(fields: [courtId], references: [id], onDelete: SetNull)
+  scheduledTime DateTime?
+
+  teamAId String
+  teamA   Team   @relation("TeamA", fields: [teamAId], references: [id], onDelete: Cascade)
+  teamBId String
+  teamB   Team   @relation("TeamB", fields: [teamBId], references: [id], onDelete: Cascade)
+
+  status   MatchStatus @default(SCHEDULED)
+  winnerId String?
+  winner   Team?       @relation("Winner", fields: [winnerId], references: [id], onDelete: SetNull)
+
+  games Game[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Game {
+  id          String     @id @default(cuid())
+  matchId     String
+  match       Match      @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  gameNumber  Int        // 1, 2, 3 within a best-of-3 match
+
+  teamAScore Int @default(0)
+  teamBScore Int @default(0)
+
+  // Only populated/used when the division's scoringType is TRADITIONAL.
+  // Stay null for RALLY-scored divisions (Section 6).
+  servingTeamId String?
+  servingTeam   Team?   @relation("ServingTeam", fields: [servingTeamId], references: [id], onDelete: SetNull)
+  serverNumber  Int?    // 1 or 2, doubles server tracking
+
+  status GameStatus @default(IN_PROGRESS)
+
+  pointEvents PointEvent[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Every point as an event, not just a current score field (Section 3).
+// Makes the live score a derived value and supports undo + dispute resolution.
+model PointEvent {
+  id      String @id @default(cuid())
+  gameId  String
+  game    Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  scoringTeamId  String
+  scoringTeam    Team   @relation(fields: [scoringTeamId], references: [id], onDelete: Cascade)
+  teamAScoreAfter Int
+  teamBScoreAfter Int
+
+  enteredByUserId String
+  enteredByUser   User          @relation(fields: [enteredByUserId], references: [id], onDelete: Cascade)
+  enteredByRole   EnteredByRole
+
+  deviceId String? // for offline conflict tracing on referee phones
+
+  createdAt DateTime @default(now())
+}
+
+model User {
+  id       String   @id @default(cuid())
+  name     String
+  role     UserRole
+  email    String   @unique
+  password String   // Storing hashed password for auth
+  // password/auth fields depend on chosen auth provider (NextAuth/Clerk/Supabase Auth)
+
+  pointEvents PointEvent[]
+  auditLogs   AuditLog[]
+
+  createdAt DateTime @default(now())
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  entityType String   // "Match" | "Game" | "Division" | etc.
+  entityId   String
+  action     String   // "score_override" | "create" | "update" | "dispute_resolved" | etc.
+  oldValue   String?  // SQLite does not support native JSON fields directly, so we store JSON as string.
+  newValue   String?
+
+  performedById String
+  performedBy   User   @relation(fields: [performedById], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
