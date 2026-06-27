@@ -1,0 +1,13 @@
+.wrap { display: flex; flex-direction: column; gap: 1.5rem; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.card { background: var(--surface); border: 0.5px solid var(--border-md); border-radius: var(--radius-md); overflow: hidden; }
+.cardHeader { background: var(--gray-100); padding: 8px 14px; display: flex; justify-content: space-between; align-items: center; }
+.meta { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.teams { padding: 12px 14px; display: flex; flex-direction: column; }
+.teamRow { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 14px; font-weight: 500; color: var(--muted); }
+.winner { color: var(--text); font-weight: 600; }
+.sep { height: 0.5px; background: var(--border); }
+.pts { font-size: 22px; font-weight: 700; font-family: var(--font-mono); color: var(--green-700); }
+.loser { color: var(--gray-400); }
+.refTag { padding: 6px 14px 8px; font-size: 11px; color: var(--blue-600); display: flex; align-items: center; gap: 4px; border-top: 0.5px solid var(--border); background: var(--blue-50); font-weight: 500; }
+@media (max-width: 500px) { .grid { grid-template-columns: 1fr; } }

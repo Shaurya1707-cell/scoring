@@ -1,0 +1,17 @@
+.wrap { display: flex; flex-direction: column; gap: 1.25rem; }
+.statsRow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.th { text-align: left; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+.tr td { padding: 10px 8px; border-bottom: 0.5px solid var(--border); }
+.tr:last-child td { border-bottom: none; }
+.tr:hover { background: var(--gray-50); }
+.rank { font-weight: 700; font-size: 15px; }
+.playerName { font-weight: 500; }
+.playerTeam { font-size: 11px; color: var(--muted); }
+.muted { color: var(--muted); }
+.emptyRow { text-align: center; color: var(--muted); padding: 2rem; font-size: 14px; }
+.bars { display: flex; flex-direction: column; gap: 12px; }
+.barRow { display: flex; flex-direction: column; gap: 5px; }
+.barLabel { display: flex; justify-content: space-between; font-size: 13px; }
+@media (max-width: 700px) { .grid { grid-template-columns: 1fr; } .statsRow { grid-template-columns: 1fr 1fr; } }

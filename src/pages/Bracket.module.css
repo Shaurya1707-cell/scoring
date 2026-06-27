@@ -1,0 +1,16 @@
+.title { font-size: 16px; font-weight: 600; margin-bottom: 1.25rem; }
+.scroll { overflow-x: auto; padding-bottom: 1rem; }
+.bracket { display: flex; gap: 20px; min-width: 560px; align-items: flex-start; }
+.roundCol { display: flex; flex-direction: column; flex-shrink: 0; }
+.roundLabel { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; text-align: center; padding-bottom: 12px; }
+.games { display: flex; flex-direction: column; }
+.matchCard { background: var(--surface); border: 0.5px solid var(--border-md); border-radius: 8px; overflow: hidden; width: 172px; }
+.liveBar { background: var(--red-50); color: var(--red-600); font-size: 10px; font-weight: 700; letter-spacing: 0.06em; padding: 4px 10px; display: flex; align-items: center; gap: 5px; }
+.liveDot { width: 6px; height: 6px; background: var(--red-400); border-radius: 50%; flex-shrink: 0; animation: pulse 1.4s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.upcomingBar { background: var(--gray-100); color: var(--muted); font-size: 10px; font-weight: 500; padding: 4px 10px; letter-spacing: 0.03em; }
+.matchTeam { padding: 9px 10px; font-size: 13px; display: flex; justify-content: space-between; align-items: center; gap: 6px; font-weight: 500; color: var(--muted); }
+.winner { background: var(--green-50); color: var(--green-800); font-weight: 600; }
+.score { font-family: var(--font-mono); font-size: 13px; font-weight: 700; flex-shrink: 0; }
+.winner .score { color: var(--green-700); }
+.divider { height: 0.5px; background: var(--border); }

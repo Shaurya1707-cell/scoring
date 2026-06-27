@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pickleball-tournament</title>
+    <script>
+      window.addEventListener('error', function(event) {
+        const root = document.getElementById('root');
+        if (root) {
+          root.innerHTML = `
+            <div style="padding: 20px; background: #fee2e2; color: #991b1b; font-family: monospace; border: 1px solid #f87171; border-radius: 8px; margin: 20px; z-index: 9999; position: relative;">
+              <h3 style="margin-top: 0;">Runtime Error Captured:</h3>
+              <p><strong>Message:</strong> ${event.message}</p>
+              <p><strong>File:</strong> ${event.filename}</p>
+              <p><strong>Line/Col:</strong> ${event.lineno}:${event.colno}</p>
+              <pre style="background: #fff; padding: 10px; border-radius: 4px; border: 1px solid #fca5a5; overflow: auto; max-height: 400px; white-space: pre-wrap; word-break: break-all;">${event.error ? event.error.stack : 'No stack trace available'}</pre>
+            </div>
+          `;
+        }
+      });
+      window.addEventListener('unhandledrejection', function(event) {
+        const root = document.getElementById('root');
+        if (root) {
+          root.innerHTML = `
+            <div style="padding: 20px; background: #fee2e2; color: #991b1b; font-family: monospace; border: 1px solid #f87171; border-radius: 8px; margin: 20px; z-index: 9999; position: relative;">
+              <h3 style="margin-top: 0;">Unhandled Promise Rejection:</h3>
+              <p><strong>Reason:</strong> ${event.reason}</p>
+              <pre style="background: #fff; padding: 10px; border-radius: 4px; border: 1px solid #fca5a5; overflow: auto; max-height: 400px; white-space: pre-wrap; word-break: break-all;">${event.reason && event.reason.stack ? event.reason.stack : 'No stack trace available'}</pre>
+            </div>
+          `;
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

@@ -1,0 +1,230 @@
+.wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+}
+
+.loading {
+  text-align: center;
+  padding: 80px 16px;
+  color: var(--muted);
+}
+.notFound {
+  text-align: center;
+  padding: 80px 16px;
+}
+.backLink {
+  color: var(--green-700);
+  font-size: 0.9rem;
+  margin-top: 8px;
+  display: inline-block;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+.header {
+  padding: 16px 0 12px;
+}
+
+/* ── Tournament Banner ──────────────────────────────────────────────────── */
+.bannerWrap {
+  position: relative;
+  width: 100%;
+  max-height: 260px;
+  border-radius: var(--radius-md, 12px);
+  overflow: hidden;
+  margin: 12px 0 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+.bannerImg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-height: 260px;
+  object-fit: cover;
+}
+.bannerOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.35) 0%, transparent 100%);
+  pointer-events: none;
+}
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.82rem;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 0;
+  transition: color 0.15s;
+  text-decoration: none;
+}
+.backBtn:hover {
+  color: var(--green-700);
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 8px;
+}
+.emoji {
+  font-size: 2.4rem;
+  line-height: 1;
+}
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.3px;
+}
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+.sport {
+  font-size: 0.82rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+/* ── Registration Banner ────────────────────────────────────────────────── */
+.regBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 20px;
+  border-radius: var(--radius-md);
+  margin-bottom: 16px;
+  transition: all 0.2s ease;
+}
+.regBannerOpen {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.08) 0%, rgba(16, 185, 129, 0.06) 100%);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+}
+.regBannerClosed {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  opacity: 0.85;
+}
+.regBannerLeft {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+.regBannerIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+.regBannerOpen .regBannerIcon {
+  background: rgba(34, 197, 94, 0.15);
+  color: var(--green-700);
+}
+.regBannerClosed .regBannerIcon {
+  background: var(--border);
+  color: var(--muted);
+}
+.regBannerInfo {
+  min-width: 0;
+}
+.regBannerTitle {
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.3;
+}
+.regBannerOpen .regBannerTitle {
+  color: var(--green-700);
+}
+.regBannerClosed .regBannerTitle {
+  color: var(--muted);
+}
+.regBannerSub {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* ── Team Registration Form ─────────────────────────────────────────────── */
+.teamRegForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+.teamMembersSection {
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.teamMembersLabel {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+/* ── Tabs ────────────────────────────────────────────────────────────────── */
+.tabs {
+  display: flex;
+  gap: 2px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+  overflow-x: auto;
+}
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+.tab:hover {
+  color: var(--text);
+}
+.tabActive {
+  color: var(--green-700);
+  border-bottom-color: var(--green-600);
+}
+
+.content {
+  min-height: 300px;
+}
+
+@media (max-width: 600px) {
+  .title { font-size: 1.2rem; }
+  .emoji { font-size: 1.8rem; }
+  .tab { padding: 8px 12px; font-size: 0.8rem; }
+  .regBanner { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .regBannerIcon { width: 36px; height: 36px; }
+  .bannerWrap { max-height: 160px; }
+  .bannerImg { max-height: 160px; }
+}
